@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.raymond.dao.Country;
+import com.raymond.mapper.CountryMapper;
 
 public class MainTest {
     private static SqlSessionFactory sqlSessionFactory;
@@ -23,6 +24,19 @@ public class MainTest {
             reader.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void testSelectAll_mapper(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
+            List<Country> countries = mapper.selectAll();
+            countries.forEach(System.out::println);
+        }finally {
+            sqlSession.close();
         }
     }
 

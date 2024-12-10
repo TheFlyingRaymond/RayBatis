@@ -6,4 +6,6 @@ import com.raymond.dao.Country;
 
 public interface CountryMapper {
     List<Country> selectAll();
+
+    Country selectMax();
 }

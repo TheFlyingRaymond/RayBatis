@@ -13,4 +13,10 @@ public class RayBatisTest {
         List<Country> countries = new RayBatisSession().getMapper(CountryMapper.class).selectAll();
         System.out.println(countries);
     }
+
+    @Test
+    public void testSelectMax() throws Exception {
+        Country country = new RayBatisSession().getMapper(CountryMapper.class).selectMax();
+        System.out.println(country);
+    }
 }

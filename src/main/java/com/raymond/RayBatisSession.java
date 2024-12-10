@@ -9,10 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.raymond.configuration.ConfigurationManager;
 import com.raymond.configuration.RayBatisConfiguration;
 import com.raymond.converter.ResultConverter;
 
@@ -22,11 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class RayBatisSession {
-    private ConfigurationManager configurationManager = new ConfigurationManager();
+    private RayBatisConfiguration configuration;
+
+    public RayBatisSession(RayBatisConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
     <T> T getMapper(Class<T> clazz) throws Exception {
         // 创建并返回动态代理对象
-        RayBatisConfiguration configuration = configurationManager.getConfiguration(clazz);
         if (null == configuration) {
             log.error("未找到该Mapper的配置信息");
             throw new Exception("未找到该Mapper的配置信息");

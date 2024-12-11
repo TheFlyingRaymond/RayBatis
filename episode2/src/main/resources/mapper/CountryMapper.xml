@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raymond.mapper.CountryMapper">
+    <resultMap id="resultMap" type="com.raymond.dao.Country">
+        <id property="id" column="id"></id>
+        <result property="countryName" column="country_name"/>
+        <result property="countryCode" column="country_code"/>
+    </resultMap>
+    <select id="selectAll" resultMap="resultMap">
+        select * from country
+    </select>
+
+    <select id="selectMax" resultMap="resultMap">
+        select * from country order by id desc limit 1
+    </select>
+
+
+    <select id="count" resultType="long">
+        select count(*) from country
+    </select>
+</mapper>

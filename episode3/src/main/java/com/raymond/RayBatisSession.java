@@ -71,7 +71,7 @@ public class RayBatisSession {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // 2. 建立数据库连接
-            connection = DriverManager.getConnection(configuration.getUrl(), configuration.getUser(), configuration.getPassword());
+            connection = configuration.getEnvironment().getDataSource().getConnection();
 
             // 3. 创建Statement对象
             statement = connection.createStatement();

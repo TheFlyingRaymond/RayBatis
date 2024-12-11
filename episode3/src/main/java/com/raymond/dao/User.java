@@ -5,10 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+@NoArgsConstructor
+public class User {
     private Long id;
-    private String countryName;
-    private String countryCode;
+    private String name;
+    private Integer age;
+    private String email;
 }

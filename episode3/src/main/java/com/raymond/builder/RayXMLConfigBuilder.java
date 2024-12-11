@@ -1,10 +1,13 @@
 package com.raymond.builder;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Objects;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.parsing.XNode;
 
 import com.raymond.configuration.RayBatisConfiguration;
@@ -38,6 +41,48 @@ public class RayXMLConfigBuilder {
         //environments：用户名密码等
         parseEnvironments(xNode.evalNode("environments"));
         //mappers：映射器
+        parseMappers(xNode.evalNode("mappers"));
+
+    }
+
+    private void parseMappers(XNode context) {
+        if (Objects.isNull(context)) {
+            log.warn("未找到mappers节点");
+            return;
+        }
+
+        for (XNode node : context.getChildren()) {
+            if (node.getName().equals("package")) {
+                log.info("暂时没有能力处理package数据:{}", node.getStringAttribute("name"));
+                continue;
+            }
+
+            String resource = node.getStringAttribute("resource");
+            if (null != resource) {
+                addResourceMapper(resource);
+                continue;
+            }
+
+            String url = node.getStringAttribute("url");
+            String clazz = node.getStringAttribute("class");
+            if (url != null | clazz != null) {
+                log.info("暂时没有能力处理url或clazz的能力, url:{}, clazz:{}", url, clazz);
+                continue;
+            }
+
+        }
+
+    }
+
+    //解析一个mapper的xml文件
+    private void addResourceMapper(String resource) {
+        Reader reader = null;
+        try {
+            reader = Resources.getResourceAsReader(resource);
+            new RayXMLMapperBuilder(reader, configuration,resource).parse();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void parseEnvironments(XNode context) {

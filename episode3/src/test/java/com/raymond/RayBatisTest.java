@@ -10,10 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.raymond.builder.RayXMLConfigBuilder;
-import com.raymond.configuration.ConfigurationManager;
 import com.raymond.configuration.RayBatisConfiguration;
 import com.raymond.dao.Country;
+import com.raymond.dao.User;
 import com.raymond.mapper.CountryMapper;
+import com.raymond.mapper.UserMapper;
 import com.raymond.parsing.RayXPathParser;
 
 public class RayBatisTest {
@@ -24,10 +25,6 @@ public class RayBatisTest {
         Reader reader = Resources.getResourceAsReader("batis-config.xml");
 
         RayBatisConfiguration configuration = new RayXMLConfigBuilder(new RayXPathParser(reader)).parse();
-
-        ConfigurationManager tempManager = new ConfigurationManager();
-        configuration.setMethodMap(tempManager.getConfiguration().getMethodMap());
-        configuration.setMethodNameToResultConverter(tempManager.getConfiguration().getMethodNameToResultConverter());
 
         sessionFactory = new RayBatisSessionFactoryImpl(configuration);
     }
@@ -51,5 +48,13 @@ public class RayBatisTest {
         Long result = sessionFactory.openSession().getMapper(CountryMapper.class).count();
         System.out.println(result);
         Assert.assertNotNull(result);
+    }
+
+
+    @Test
+    public void testSelectMax_People() throws Exception {
+        User People = sessionFactory.openSession().getMapper(UserMapper.class).selectMax();
+        System.out.println(People);
+        Assert.assertNotNull(People);
     }
 }

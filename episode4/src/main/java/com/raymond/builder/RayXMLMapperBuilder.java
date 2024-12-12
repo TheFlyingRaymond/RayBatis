@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.parsing.XPathParser;
 import org.apache.ibatis.type.JdbcType;
 
 import com.raymond.configuration.RayBatisConfiguration;
 import com.raymond.exception.RayConfigParseException;
-import com.raymond.mapping.RayMappedStatement;
 import com.raymond.mapping.RayResultFlags;
 import com.raymond.mapping.RayResultMap;
 import com.raymond.mapping.RayResultMapping;
@@ -81,27 +79,17 @@ public class RayXMLMapperBuilder extends BaseBuilder {
             return;
         }
 
-        sqlList.forEach(this::parseStatementNode);
+        sqlList.forEach(x -> {
+            RayXMLStatementBuilder statementParser = new RayXMLStatementBuilder(configuration, mapperBuilderAssistant, x);
+            try {
+                statementParser.parseStatementNode();
+            } catch (Exception e) {
+                log.error("解析sql节点异常,node:{}",x.getName(),e);
+                throw new RuntimeException(e);
+            }
+        });
 
         log.info("[MapperBuilder]解析sql节点结束");
-    }
-
-    private void parseStatementNode(XNode node) {
-
-        String id = node.getStringAttribute("id");
-        String resultType = node.getStringAttribute("resultType");
-
-        String resultMap = node.getStringAttribute("resultMap");
-        String sql = node.getStringBody();
-        try {
-            Class<?> resultTypeClass = StringUtils.isEmpty(resultType) ? null : Class.forName(resultType);
-//            RayMappedStatement statement = new RayMappedStatement(id, sql, resultTypeClass, resultMap, namespace);
-//            configuration.addStatement(statement);
-        } catch (Exception e) {
-            log.error("parseStatementNode error, id:{}", id, e);
-        }
-
-        log.info("parseStatementNode:{}", node.getStringAttribute("id"));
     }
 
     private void parseResultMaps(List<XNode> resultMapList) {

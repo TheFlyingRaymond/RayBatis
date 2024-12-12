@@ -16,8 +16,11 @@
         select * from country order by id desc limit 1
     </select>
 
+    <select id="selectById" resultMap="resultMap">
+        select * from country where id = #{id}
+    </select>
 
-    <select id="count" resultType="long">
+    <select id="count" resultType="java.lang.Long">
         select count(*) from country
     </select>
 </mapper>

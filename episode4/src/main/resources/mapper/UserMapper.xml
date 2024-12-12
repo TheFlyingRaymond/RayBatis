@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raymond.mapper.UserMapper">
+    <resultMap id="resultMap" type="com.raymond.dao.User">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="email" column="email"/>
+    </resultMap>
+    <select id="selectAll" resultMap="resultMap">
+        select * from user
+    </select>
+
+    <select id="selectMax" resultMap="resultMap">
+        select * from user order by id desc limit 1
+    </select>
+
+
+    <select id="count" resultType="long">
+        select count(*) from user
+    </select>
+</mapper>

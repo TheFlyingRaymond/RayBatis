@@ -1,13 +1,13 @@
-package com.raymond;
+package com.raymond.binding;
 
 import lombok.Data;
 
 @Data
-public class MapperMethod {
+public class RayMapperMethod {
     String sql;
     Class<?> returnType;
 
-    public MapperMethod(String sql, Class<?> returnType) {
+    public RayMapperMethod(String sql, Class<?> returnType) {
         this.sql = sql;
         this.returnType = returnType;
     }

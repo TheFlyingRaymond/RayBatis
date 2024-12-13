@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.raymond.binding.RayMapperMethod;
 import com.raymond.configuration.RayBatisConfiguration;
 import com.raymond.converter.ResultConverter;
 import com.raymond.mapping.RayMappedStatement;
@@ -132,7 +133,7 @@ public class RayBatisSession {
         return null;
     }
 
-    private Object getJdbcResult(RayBatisConfiguration configuration, MapperMethod method,
+    private Object getJdbcResult(RayBatisConfiguration configuration, RayMapperMethod method,
                                  ResultConverter resultConverter) throws Exception {
 
         String sql = method.getSql();

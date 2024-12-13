@@ -8,6 +8,7 @@
         <module>episode2</module>
         <module>episode3</module>
         <module>episode4</module>
+        <module>episode5</module>
     </modules>
     <version>1.0-SNAPSHOT</version>
     <name>ray-batis</name>

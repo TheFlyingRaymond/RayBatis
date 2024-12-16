@@ -6,10 +6,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.reflection.property.PropertyNamer;
+
 import com.raymond.raybatis.raybatis.reflection.property.RayPropertyNamer;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Data
 @Slf4j
 public class RayReflector {
     //需要被处理的类
@@ -42,7 +46,7 @@ public class RayReflector {
         Arrays.stream(type.getMethods())
                 .filter(x -> x.getParameterCount() == 0 && RayPropertyNamer.isGetter(x.getName()))
                 .forEach(x -> {
-                    setMethods.put(x.getName(), new RayMethodInvoker(x));
+                    setMethods.put(PropertyNamer.methodToProperty(x.getName()), new RayMethodInvoker(x));
                     setType.put(x.getName(), x.getReturnType());
                 });
     }
@@ -51,7 +55,7 @@ public class RayReflector {
         Arrays.stream(type.getMethods())
                 .filter(x -> x.getParameterCount() == 1 && RayPropertyNamer.isSetter(x.getName()))
                 .forEach(x -> {
-                    setMethods.put(x.getName(), new RayMethodInvoker(x));
+                    setMethods.put(PropertyNamer.methodToProperty(x.getName()), new RayMethodInvoker(x));
                     setType.put(x.getName(), x.getParameterTypes()[0]);
                 });
     }

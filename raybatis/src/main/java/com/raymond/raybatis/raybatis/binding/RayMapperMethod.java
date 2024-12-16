@@ -31,8 +31,11 @@ public class RayMapperMethod {
         Object result = null;
         switch (command.type) {
             case select:
-                Object param = method.convertArgsToSqlCommandParam(args);
-                result = sqlSession.selectOne(command.getName(), param);
+                if (method.returnsMany) {
+                    result = sqlSession.selectList(command.getName(), method.convertArgsToSqlCommandParam(args));
+                } else {
+                    result = sqlSession.selectOne(command.getName(), method.convertArgsToSqlCommandParam(args));
+                }
             default:
                 ;
         }

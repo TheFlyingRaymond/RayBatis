@@ -51,7 +51,7 @@ public class RayTypeAliasRegistry {
     }
 
     public void registerAlias(String alias, Class<?> target) {
-        log.info("开始注册别名, 别名:{}, 目标类:{}", alias, target.getName());
+        log.debug("开始注册别名, 别名:{}, 目标类:{}", alias, target.getName());
         if (alias == null || target == null) {
             throw new RayConfigParseException("Error registering typeAlias.  TypeAlias or JavaType already registered.");
         }
@@ -61,7 +61,7 @@ public class RayTypeAliasRegistry {
         }
 
         typeAliasMap.put(alias, target);
-        log.info("注册别名成功, 别名:{}, 目标类:{}", alias, target.getName());
+        log.debug("注册别名成功, 别名:{}, 目标类:{}", alias, target.getName());
     }
 
     private void registerDefaultAlias() {

@@ -1,25 +1,20 @@
 package com.raymond.raybatis.raybatis.builder;
 
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.parsing.XPathParser;
-import org.apache.ibatis.type.JdbcType;
 
 import com.raymond.raybatis.raybatis.configuration.RayBatisConfiguration;
 import com.raymond.raybatis.raybatis.exception.RayConfigParseException;
-import com.raymond.raybatis.raybatis.mapping.RayResultFlags;
-import com.raymond.raybatis.raybatis.mapping.RayResultMap;
-import com.raymond.raybatis.raybatis.mapping.RayResultMapping;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RayXMLMapperBuilder extends BaseBuilder {
+public class RayXMLMapperBuilder extends RayBaseBuilder {
     private Reader reader;
     private String resource;
     private XPathParser parser;
@@ -81,11 +76,11 @@ public class RayXMLMapperBuilder extends BaseBuilder {
         }
 
         sqlList.forEach(x -> {
-            RayXMLStatementBuilder statementParser = new RayXMLStatementBuilder(configuration, mapperBuilderAssistant, x);
+            RayXMLStatementBuilder statementParser = new RayXMLStatementBuilder(configuration, namespace, x);
             try {
-                statementParser.parseStatementNode();
+                statementParser.parse();
             } catch (Exception e) {
-                log.error("解析sql节点异常,node:{}",x.getName(),e);
+                log.error("解析sql节点异常,node:{}", x.getName(), e);
                 throw new RuntimeException(e);
             }
         });
@@ -99,7 +94,7 @@ public class RayXMLMapperBuilder extends BaseBuilder {
             log.info("未找到resultMap节点");
             return;
         }
-        resultMapList.forEach(node->{
+        resultMapList.forEach(node -> {
             new RayResultMapBuilder(configuration, namespace, node).parse();
         });
         log.info("[MapperBuilder]解析resultMap节点结束");

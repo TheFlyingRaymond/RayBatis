@@ -2,7 +2,6 @@ package com.raymond.raybatis.raybatis.builder;
 
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeAliasRegistry;
 
 import com.raymond.raybatis.raybatis.configuration.RayBatisConfiguration;
 import com.raymond.raybatis.raybatis.type.RayTypeAliasRegistry;
@@ -10,14 +9,14 @@ import com.raymond.raybatis.raybatis.type.RayTypeAliasRegistry;
 import lombok.Data;
 
 @Data
-public class BaseBuilder {
+public class RayBaseBuilder {
     protected RayBatisConfiguration configuration;
     protected RayTypeAliasRegistry typeAliasRegistry;
 
-    public BaseBuilder() {
+    public RayBaseBuilder() {
     }
 
-    public BaseBuilder(RayBatisConfiguration configuration) {
+    public RayBaseBuilder(RayBatisConfiguration configuration) {
         this.configuration = configuration;
         this.typeAliasRegistry = this.configuration.getTypeAliasRegistry();
     }

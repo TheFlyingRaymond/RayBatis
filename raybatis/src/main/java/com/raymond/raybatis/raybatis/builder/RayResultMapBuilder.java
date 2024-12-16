@@ -14,7 +14,7 @@ import com.raymond.raybatis.raybatis.mapping.RayResultMapping;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RayResultMapBuilder extends BaseBuilder {
+public class RayResultMapBuilder extends RayBaseBuilder {
     private String namespace;
     private XNode node;
 

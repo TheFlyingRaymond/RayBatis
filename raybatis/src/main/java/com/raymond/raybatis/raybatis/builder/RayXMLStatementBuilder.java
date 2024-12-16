@@ -4,23 +4,26 @@ import org.apache.ibatis.parsing.XNode;
 
 import com.raymond.raybatis.raybatis.configuration.RayBatisConfiguration;
 import com.raymond.raybatis.raybatis.enums.RaySqlCommandType;
+import com.raymond.raybatis.raybatis.mapping.RayBoundSql;
+import com.raymond.raybatis.raybatis.mapping.RayMappedStatement;
+import com.raymond.raybatis.raybatis.mapping.RayResultMap;
 import com.raymond.raybatis.raybatis.mapping.RaySimpleSqlSource;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RayXMLStatementBuilder extends BaseBuilder {
+public class RayXMLStatementBuilder extends RayBaseBuilder {
     private XNode context;
-    private RayMapperBuilderAssistant mapperBuilderAssistant;
+    private String namespace;
 
     public RayXMLStatementBuilder(RayBatisConfiguration configuration,
-                                  RayMapperBuilderAssistant mapperBuilderAssistant, XNode context) {
+                                  String namespace, XNode context) {
         super(configuration);
         this.context = context;
-        this.mapperBuilderAssistant = mapperBuilderAssistant;
+        this.namespace = namespace;
     }
 
-    public void parseStatementNode() {
+    public void parse() {
         String id = context.getStringAttribute("id");
 
         String nodeName = context.getNode().getNodeName();
@@ -33,10 +36,25 @@ public class RayXMLStatementBuilder extends BaseBuilder {
 
         String resultMap = context.getStringAttribute("resultMap");
 
-        configuration.addStatement(mapperBuilderAssistant.addMappedStatement(configuration,id, sqlSource, commandType
+        configuration.addStatement(addMappedStatement(configuration, id, sqlSource, commandType
                 , resultMap,
                 resultTypeClass));
 
         log.info("parseStatementNode:{}", context.getStringAttribute("id"));
+    }
+
+    public RayMappedStatement addMappedStatement(RayBatisConfiguration configuration, String id,
+                                                 RaySimpleSqlSource sqlSource, RaySqlCommandType commandType,
+                                                 String resultMap, Class<?> resultTypeClass) {
+        RayMappedStatement statement = new RayMappedStatement();
+        statement.setConfiguration(configuration);
+        statement.setId(namespace + "." + id);
+        RayResultMap rayResultMap = configuration.getResultMaps().get(namespace + "." + resultMap);
+        statement.setResultMap(rayResultMap);
+        statement.setSqlCommandType(commandType);
+        RayBoundSql rayBoundSql = new RayBoundSql();
+        rayBoundSql.setSql(context.getStringBody());
+        statement.setBoundSQL(rayBoundSql);
+        return statement;
     }
 }

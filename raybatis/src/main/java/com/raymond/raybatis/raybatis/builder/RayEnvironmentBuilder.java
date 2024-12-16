@@ -16,7 +16,7 @@ import com.zaxxer.hikari.HikariConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RayEnvironmentBuilder extends BaseBuilder {
+public class RayEnvironmentBuilder extends RayBaseBuilder {
     private XNode context;
     private String environment;
 

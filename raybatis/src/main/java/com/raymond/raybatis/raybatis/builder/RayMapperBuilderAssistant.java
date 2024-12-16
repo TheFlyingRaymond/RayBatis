@@ -15,7 +15,7 @@ import com.raymond.raybatis.raybatis.mapping.RaySimpleSqlSource;
 import lombok.Data;
 
 @Data
-public class RayMapperBuilderAssistant extends BaseBuilder {
+public class RayMapperBuilderAssistant extends RayBaseBuilder {
     private String namespace;
     private String source;
 

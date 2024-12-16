@@ -47,14 +47,14 @@ public class RayXMLConfigBuilder {
 
     }
 
-    private void parseAlias(XNode node) {
+    public void parseAlias(XNode node) {
         if (node == null) {
             return;
         }
 
         for (XNode child : node.getChildren()) {
-            if ("package".equals(node.getName())) {
-                log.info("暂不支持包级别的别名解析");
+            if ("package".equals(child.getName())) {
+                configuration.getTypeAliasRegistry().registerPackageAliases(child.getStringAttribute("name"));
                 continue;
             }
 
@@ -162,5 +162,9 @@ public class RayXMLConfigBuilder {
         }
 
         return environment.equals(id);
+    }
+
+    public RayBatisConfiguration getConfiguration() {
+        return configuration;
     }
 }

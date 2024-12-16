@@ -11,10 +11,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.type.TypeException;
+import org.reflections.Reflections;
 
+import com.raymond.raybatis.raybatis.annotation.RayAlias;
 import com.raymond.raybatis.raybatis.exception.RayConfigParseException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -123,5 +127,20 @@ public class RayTypeAliasRegistry {
 
     public Map<String, Class<?>> getTypeAliasMap() {
         return typeAliasMap;
+    }
+
+    public void registerPackageAliases(String packageName) {
+        log.info("开始注册包别名, 包名:{}", packageName);
+
+        Set<Class<?>> classes =  new Reflections(packageName).getTypesAnnotatedWith(RayAlias.class);
+        for (Class<?> clazz : classes) {
+            RayAlias aliasAnnotation = clazz.getAnnotation(RayAlias.class);
+            String alias = aliasAnnotation.value();
+            if (StringUtils.isEmpty(alias)) {
+                alias = clazz.getSimpleName();
+            }
+            log.info("包扫描注册目标类, alias:{}, class:{}", alias, clazz.getCanonicalName());
+            typeAliasMap.put(alias, clazz);
+        }
     }
 }

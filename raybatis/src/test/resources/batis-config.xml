@@ -4,7 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <package name="com.raymond.dao"/>
+        <typeAlias type="com.raymond.raybatis.raybatis.dao.Country" alias="Country"/>
+        <typeAlias type="com.raymond.raybatis.raybatis.dao.User" alias="User"/>
+        <package name="com.raymond.raybatis.raybatis.dao.dao2"/>
     </typeAliases>
 
     <environments default="development">

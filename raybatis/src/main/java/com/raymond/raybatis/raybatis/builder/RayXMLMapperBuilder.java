@@ -66,7 +66,6 @@ public class RayXMLMapperBuilder extends BaseBuilder {
         mapperBuilderAssistant.setNamespace(namespace);
         configuration.addMapper(Resources.classForName(namespace));
 
-
         parseResultMaps(context.evalNodes("resultMap"));
 
         parseStatement(context.evalNodes("select|delete|update|insert"));
@@ -100,41 +99,10 @@ public class RayXMLMapperBuilder extends BaseBuilder {
             log.info("未找到resultMap节点");
             return;
         }
-        resultMapList.forEach(this::parseResultMap);
+        resultMapList.forEach(node->{
+            new RayResultMapBuilder(configuration, namespace, node).parse();
+        });
         log.info("[MapperBuilder]解析resultMap节点结束");
-    }
-
-    private void parseResultMap(XNode node) {
-        try {
-            String id = node.getStringAttribute("id");
-            Class<?> typeClass = resolveClass(node.getStringAttribute("type"));
-            List<RayResultMapping> resultMappings = new ArrayList<>();
-
-            List<XNode> children = node.getChildren();
-            for (XNode child : children) {
-                List<RayResultFlags> flags = new ArrayList<>();
-                if ("id".equals(child.getName())) {
-                    flags.add(RayResultFlags.ID);
-                }
-                resultMappings.add(buildResultMapping(child, typeClass, flags));
-            }
-            id = namespace + "." + id;
-            RayResultMap resultMap = new RayResultMap(configuration, id, typeClass, resultMappings, false);
-            configuration.addResultMap(resultMap);
-        } catch (Exception e) {
-            log.error("parseResultMap error, id:{}", node.getName(), e);
-        }
-    }
-
-    private RayResultMapping buildResultMapping(XNode child, Class<?> resultType, List<RayResultFlags> flags) {
-        String property = child.getStringAttribute("property");
-        String column = child.getStringAttribute("column");
-        String javaType = child.getStringAttribute("javaType");
-        Class<?> javaTypeClass = resolveClass(javaType);
-        String jdbcType = child.getStringAttribute("jdbcType");
-        JdbcType jdbcTypeEnum = resolveJdbcType(jdbcType);
-        return mapperBuilderAssistant.buildResultMapping(resultType, property, column, javaTypeClass, jdbcTypeEnum,
-                flags);
     }
 
     private void bindMapper2NameSpace() {

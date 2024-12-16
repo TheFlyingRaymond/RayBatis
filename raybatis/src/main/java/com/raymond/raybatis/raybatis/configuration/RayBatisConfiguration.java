@@ -64,4 +64,9 @@ public class RayBatisConfiguration { // 数据库连接信息
     public <T> T getMapper(Class<T> type, RaySqlSession sqlSession) {
         return mapperRegistry.getMapper(type, sqlSession);
     }
+
+    @Override
+    public String toString() {
+        return "RayBatisConfiguration{}";
+    }
 }

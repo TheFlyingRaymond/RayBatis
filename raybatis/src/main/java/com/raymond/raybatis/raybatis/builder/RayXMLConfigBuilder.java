@@ -74,7 +74,7 @@ public class RayXMLConfigBuilder {
         }
     }
 
-    private void parseMappers(XNode context) {
+    public void parseMappers(XNode context) {
         if (Objects.isNull(context)) {
             log.warn("未找到mappers节点");
             return;

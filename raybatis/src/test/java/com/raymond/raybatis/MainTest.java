@@ -26,8 +26,6 @@ public class MainTest {
             e.printStackTrace();
         }
     }
-
-
     @Test
     public void testSelectAll_mapper(){
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -35,6 +33,18 @@ public class MainTest {
             CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
             List<Country> countries = mapper.selectAll();
             countries.forEach(System.out::println);
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelect_by_id_mapper(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
+            Country ret = mapper.selectById(2L);
+            System.out.println(ret);
         }finally {
             sqlSession.close();
         }

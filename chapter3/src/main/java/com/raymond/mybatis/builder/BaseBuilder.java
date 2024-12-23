@@ -14,4 +14,8 @@ public class BaseBuilder {
     public BaseBuilder(Configuration configuration) {
         this.configuration = configuration;
     }
+
+    protected Class<?> resolveClass(String nameOrAlias) {
+        return configuration.getTypeAliasRegistry().resolveAlias(nameOrAlias);
+    }
 }

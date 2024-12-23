@@ -3,12 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <typeAliases>
-        <typeAlias type="com.raymond.raybatis.raybatis.dao.Country" alias="Country"/>
-        <typeAlias type="com.raymond.raybatis.raybatis.dao.User" alias="User"/>
-        <package name="com.raymond.raybatis.raybatis.dao.dao2"/>
-    </typeAliases>
-
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -21,8 +15,8 @@
         </environment>
     </environments>
 
-    <mappers>
-        <mapper resource="mapper/CountryMapper.xml"/>
-        <mapper resource="mapper/UserMapper.xml"/>
-    </mappers>
+    <typeAliases>
+        <typeAlias type="com.raymond.mybatis.datasource.SimpleHikariDataSourceFactory"
+                   alias="SimpleHikariDataSourceFactory"/>
+    </typeAliases>
 </configuration>

@@ -15,6 +15,10 @@
         </environment>
     </environments>
 
+    <mappers>
+        <mapper resource="mapper/CountryMapper.xml"/>
+    </mappers>
+
     <typeAliases>
         <typeAlias type="com.raymond.mybatis.datasource.SimpleHikariDataSourceFactory"
                    alias="SimpleHikariDataSourceFactory"/>

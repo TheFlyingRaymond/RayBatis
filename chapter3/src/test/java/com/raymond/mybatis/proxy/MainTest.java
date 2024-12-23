@@ -20,7 +20,7 @@ public class MainTest {
     public void test() throws Exception {
         Configuration configuration = new XMLConfigBuilder(new XPathParser(Resources.getResourceAsReader("batis-config.xml"))).parse();
         CountryMapper mapper = new DefaultSqlSessionFactory(configuration).openSession().getMapper(CountryMapper.class);
-        Country country = mapper.selectTestCountry();
+        Country country = mapper.selectById(1L);
         System.out.println(country);
         assertNotNull(country);
     }

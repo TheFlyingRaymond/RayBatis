@@ -1,7 +1,9 @@
 package com.raymond.mybatis.builder;
 
+import java.io.Reader;
 import java.util.Properties;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.parsing.XPathParser;
 
@@ -34,10 +36,41 @@ public class XMLConfigBuilder extends BaseBuilder{
     }
 
     private void parseConfiguration(XNode node) throws Exception {
+        //别名解析
         parseAliases(node.evalNode("typeAliases"));
-
         //environments：用户名密码等
         parseEnvironments(node.evalNode("environments"));
+        //解析mapper文件
+        parseMappers(node.evalNode("mappers"));
+    }
+
+    private void parseMappers(XNode context) {
+        if (context == null) {
+            return;
+        }
+        for (XNode node : context.getChildren()) {
+            if (node.getName().equals("package")) {
+                log.info("暂时没有能力处理package数据:{}", node.getStringAttribute("name"));
+                continue;
+            }
+
+            String resource = node.getStringAttribute("resource");
+            if (null != resource) {
+                addResourceMapper(resource);
+                continue;
+            }
+        }
+    }
+
+    //解析一个mapper的xml文件
+    private void addResourceMapper(String resource) {
+        Reader reader = null;
+        try {
+            reader = Resources.getResourceAsReader(resource);
+            new XMLMapperBuilder(reader, configuration,resource).parse();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void parseAliases(XNode typeAliases) {

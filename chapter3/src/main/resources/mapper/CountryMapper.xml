@@ -8,19 +8,7 @@
         <result property="countryName" column="country_name"/>
         <result property="countryCode" column="country_code"/>
     </resultMap>
-    <select id="selectAll" resultMap="resultMap">
-        select * from country
-    </select>
-
-    <select id="selectMax" resultMap="resultMap">
-        select * from country order by id desc limit 1
-    </select>
-
     <select id="selectById" resultMap="resultMap">
         select * from country where id = #{id}
-    </select>
-
-    <select id="count" resultType="java.lang.Long">
-        select count(*) from country
     </select>
 </mapper>

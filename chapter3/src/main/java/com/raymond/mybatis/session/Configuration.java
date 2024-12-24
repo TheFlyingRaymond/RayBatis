@@ -3,6 +3,8 @@ package com.raymond.mybatis.session;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.type.TypeAliasRegistry;
 
 import com.raymond.mybatis.mapping.Environment;
@@ -15,6 +17,7 @@ public class Configuration {
     private Environment environment;
     private TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
     protected final Map<String, MappedStatement> mappedStatements = new HashMap<>();
+    protected ObjectFactory objectFactory = new DefaultObjectFactory();
 
     public void setEnvironment(Environment environment) {
         this.environment = environment;

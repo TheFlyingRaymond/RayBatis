@@ -1,8 +1,11 @@
 package com.raymond.mybatis.session;
 
+import java.util.Map;
+
 import com.raymond.mybatis.Executor.Executor;
-import com.raymond.mybatis.Executor.MockExecutor;
+import com.raymond.mybatis.Executor.SimpleExecutor;
 import com.raymond.mybatis.binding.MapperRegistry;
+import com.raymond.mybatis.mapping.MappedStatement;
 import com.raymond.mybatis.testdata.CountryMapper;
 
 public class DefaultSqlSession implements SqlSession {
@@ -14,7 +17,7 @@ public class DefaultSqlSession implements SqlSession {
         this.configuration = configuration;
         this.mapperRegistry = new MapperRegistry(configuration);
         mapperRegistry.addMapper(CountryMapper.class);
-        this.executor = new MockExecutor(configuration.getEnvironment().getDataSource());
+        this.executor = new SimpleExecutor(configuration.getEnvironment().getDataSource());
     }
 
     @Override
@@ -23,7 +26,14 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
-    public Object execute() {
-        return executor.execute();
+    public <T> T selectOne(String statement, Map<String, Object> parameter) {
+        MappedStatement mappedStatement = configuration.getMappedStatement(statement);
+
+        return executor.query(mappedStatement, parameter);
+    }
+
+    @Override
+    public Configuration getConfiguration() {
+        return configuration;
     }
 }

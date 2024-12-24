@@ -1,5 +1,9 @@
 package com.raymond.mybatis.Executor;
 
+import java.util.Map;
+
+import com.raymond.mybatis.mapping.MappedStatement;
+
 public interface Executor {
-    Object execute();
+    <T> T query(MappedStatement mappedStatement, Map<String, Object> parameter);
 }

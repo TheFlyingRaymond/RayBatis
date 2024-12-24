@@ -14,7 +14,7 @@ import com.raymond.mybatis.session.Configuration;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class XMLConfigBuilder extends BaseBuilder{
+public class XMLConfigBuilder extends BaseBuilder {
     private XPathParser parser;
 
     private String environment;
@@ -67,7 +67,7 @@ public class XMLConfigBuilder extends BaseBuilder{
         Reader reader = null;
         try {
             reader = Resources.getResourceAsReader(resource);
-            new XMLMapperBuilder(reader, configuration,resource).parse();
+            new XMLMapperBuilder(reader, configuration, resource).parse();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

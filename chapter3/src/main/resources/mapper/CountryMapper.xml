@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.raymond.raybatis.raybatis.mapper.CountryMapper">
-    <resultMap id="resultMap" type="com.raymond.raybatis.raybatis.dao.Country">
+<mapper namespace="com.raymond.mybatis.testdata.CountryMapper">
+    <resultMap id="resultMap" type="com.raymond.mybatis.testdata.dao.Country">
         <id property="id" column="id"></id>
         <result property="countryName" column="country_name"/>
         <result property="countryCode" column="country_code"/>

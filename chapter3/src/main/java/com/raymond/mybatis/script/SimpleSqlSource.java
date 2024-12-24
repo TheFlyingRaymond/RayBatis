@@ -7,7 +7,7 @@ import com.raymond.mybatis.session.Configuration;
 import lombok.Data;
 
 @Data
-public class SimpleSqlSource{
+public class SimpleSqlSource {
     private final String sql;
     private final List<String> parameterMappings;
     private final Configuration configuration;

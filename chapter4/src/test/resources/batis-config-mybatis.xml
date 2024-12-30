@@ -7,11 +7,10 @@
         <typeAlias type="com.raymond.mybatis.datasource.SimpleHikariDataSourceFactory"
                    alias="SimpleHikariDataSourceFactory"/>
     </typeAliases>
-
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
-            <dataSource type="com.raymond.mybatis.datasource.SimpleHikariDataSourceFactory">
+            <dataSource type="pooled">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/raybatis"/>
                 <property name="username" value="root"/>
@@ -23,4 +22,5 @@
     <mappers>
         <mapper resource="mapper/CountryMapper.xml"/>
     </mappers>
+
 </configuration>

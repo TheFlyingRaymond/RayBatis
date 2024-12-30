@@ -33,12 +33,9 @@ public class SimpleExecutor implements Executor {
             SimpleSqlSource sqlSource = mappedStatement.getSqlSource();
             PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(sqlSource.getSql());
             Configuration configuration = mappedStatement.getConfiguration();
-
             parameterise(parameter, sqlSource, configuration, preparedStatement);
 
-            List<T> ret = new ArrayList<>();
-
-            ret = new DefaultResultSetHandler(mappedStatement.getKeyStatementId(), configuration)
+            List<T> ret = new DefaultResultSetHandler(mappedStatement.getKeyStatementId(), configuration)
                     .handleResultSets(preparedStatement);
             if (CollectionUtils.isEmpty(ret)) {
                 return null;

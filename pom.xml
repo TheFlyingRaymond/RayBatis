@@ -9,6 +9,7 @@
         <module>chapter2</module>
         <module>chapter3</module>
         <module>chapter4</module>
+        <module>chapter5</module>
     </modules>
     <version>1.0-SNAPSHOT</version>
     <name>ray-batis</name>

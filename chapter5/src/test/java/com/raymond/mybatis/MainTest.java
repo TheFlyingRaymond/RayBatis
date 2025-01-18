@@ -95,10 +95,10 @@ public class MainTest {
     }
 
     @Test
-    public void test_insert2() throws Exception {
+    public void test_insert() throws Exception {
         Country country = new Country();
-        country.setCountryCode("test_insert2_code");
-        country.setCountryName("test_insert2_name");
+        country.setCountryCode("test_insert_code");
+        country.setCountryName("test_insert_name");
         int cnt = mapper.insertCountry(country);
 
         Assert.assertTrue(1 == cnt);

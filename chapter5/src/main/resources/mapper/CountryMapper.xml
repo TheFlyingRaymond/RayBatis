@@ -24,11 +24,17 @@
         update country set country_name = #{name} where id = #{id}
     </update>
 
-    <insert id="insertCountry">
-        insert into country (country_name, country_code) values (#{countryName}, #{countryCode})
+    <insert id="insertCountry" parameterType="com.raymond.mybatis.testdata.dao.Country" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO country (country_name, country_code)
+        VALUES (#{countryName}, #{countryCode})
     </insert>
 
     <select id="selectByIdAndName" resultMap="resultMap">
         select * from country where id = #{id} and country_name = #{name}
     </select>
+
+    <select id="selectByExample" resultMap="resultMap">
+        select * from country where country_name = #{countryName} and country_code = #{countryCode}
+    </select>
+
 </mapper>

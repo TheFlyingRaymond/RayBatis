@@ -1,20 +1,21 @@
 package com.raymond.mybatis.session;
 
 import java.util.List;
-import java.util.Map;
+
+import com.raymond.mybatis.binding.IRealParam;
 
 public interface SqlSession {
     <T> T getMapper(Class<T> type);
 
-    <T> T selectOne(String statement, Map<String,Object> parameter);
+    <T> T selectOne(String statement, IRealParam paramObj);
 
-    <T> List<T> selectList(String statement, Map<String,Object> parameter);
+    <T> List<T> selectList(String statement, IRealParam paramObj);
 
-    int delete(String statement, Map<String,Object> parameter);
+    int delete(String statement, IRealParam paramObj);
 
-    int update(String statement, Map<String,Object> parameter);
+    int update(String statement, IRealParam paramObj);
 
     Configuration getConfiguration();
 
-    int insert(String name, Map<String, Object> paramNameAndObjMap);
+    int insert(String name, IRealParam paramObj);
 }

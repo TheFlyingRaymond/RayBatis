@@ -1,17 +1,13 @@
 package com.raymond.mybatis.session;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.raymond.mybatis.Executor.Executor;
 import com.raymond.mybatis.Executor.SimpleExecutor;
-import com.raymond.mybatis.binding.MapperRegistry;
+import com.raymond.mybatis.binding.IRealParam;
 import com.raymond.mybatis.mapping.MappedStatement;
-import com.raymond.mybatis.testdata.CountryMapper;
-import com.raymond.mybatis.testdata.PeopleMapper;
 
 public class DefaultSqlSession implements SqlSession {
     private final Configuration configuration;
@@ -28,7 +24,7 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
-    public <T> T selectOne(String statement, Map<String, Object> parameter) {
+    public <T> T selectOne(String statement, IRealParam parameter) {
         List<T> list = selectList(statement, parameter);
         if (CollectionUtils.isEmpty(list)) {
             return null;
@@ -40,23 +36,23 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
-    public <T> List<T> selectList(String statement, Map<String, Object> parameter) {
+    public <T> List<T> selectList(String statement, IRealParam parameter) {
         MappedStatement mappedStatement = configuration.getMappedStatement(statement);
         return executor.query(mappedStatement, parameter);
     }
 
     @Override
-    public int delete(String statement, Map<String, Object> parameter) {
+    public int delete(String statement, IRealParam parameter) {
         return update(statement, parameter);
     }
 
     @Override
-    public int insert(String statement, Map<String, Object> parameter) {
+    public int insert(String statement, IRealParam parameter) {
         return update(statement, parameter);
     }
 
     @Override
-    public int update(String statement, Map<String, Object> parameter) {
+    public int update(String statement, IRealParam parameter) {
         MappedStatement mappedStatement = configuration.getMappedStatement(statement);
         return executor.update(mappedStatement, parameter);
     }

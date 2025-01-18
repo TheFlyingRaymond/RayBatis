@@ -15,7 +15,9 @@ public interface CountryMapper {
 
     int updateNameById(@Param("id") Long id, @Param("name") String name);
 
-    int insertCountry(@Param("countryName") String name, @Param("code") String countryCode);
+    int insertCountry(Country country);
 
     Country selectByIdAndName(@Param("id") Long id, @Param("name") String name);
+
+    List<Country> selectByExample(Country country);
 }

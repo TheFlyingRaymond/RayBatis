@@ -12,12 +12,16 @@ import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.reflection.ParamNameUtil;
 
 import com.raymond.mybatis.annotation.Param;
+import com.raymond.mybatis.binding.IRealParam;
+import com.raymond.mybatis.binding.MapRealParam;
+import com.raymond.mybatis.binding.TypeRealParam;
 import com.raymond.mybatis.session.Configuration;
 
 
 public class ParamNameResolver {
     // 方法形参的索引和参数名称的映射，如果有param修饰则使用其值。这个数据是为了配合sqlsource中的sql执行
     private final SortedMap<Integer, String> names;
+    private boolean hasParamAnnotation;
 
     /**
      * 参数名解析器的构造方法
@@ -37,6 +41,7 @@ public class ParamNameResolver {
             for (Annotation annotation : paramAnnotations[idx]) {
                 // 找出参数的注解
                 if (annotation instanceof Param) {
+                    hasParamAnnotation = true;
                     name = ((Param) annotation).value();
                     break;
                 }
@@ -52,12 +57,17 @@ public class ParamNameResolver {
     }
 
 
-    public Map<String, Object> resolveNamedParams(Object[] args) {
+    public IRealParam resolveNamedParams(Object[] args) {
+        if (!hasParamAnnotation && names.size() == 1) {
+            return new TypeRealParam(args[0]);
+        }
+
         final Map<String, Object> param = new MapperMethod.ParamMap<>();
         for (Map.Entry<Integer, String> entry : names.entrySet()) {
             //根据之前记录的形参名称和id的映射，构建形参名称--实参的映射
             param.put(entry.getValue(), args[entry.getKey()]);
         }
-        return param;
+        return new MapRealParam(param);
     }
+
 }

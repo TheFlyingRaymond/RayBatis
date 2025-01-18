@@ -24,7 +24,7 @@ public class MapperMethod {
     }
 
     public Object execute(SqlSession sqlSession, Object[] args) {
-        Map<String, Object> paramNameAndObjMap = method.convertArgsToSqlCommandParam(args);
+        IRealParam paramNameAndObjMap = method.convertArgsToSqlCommandParam(args);
         switch (command.getType()) {
             case SELECT:
                 return doSelect(sqlSession, command.getName(), paramNameAndObjMap);
@@ -39,23 +39,23 @@ public class MapperMethod {
         }
     }
 
-    private Object doInsert(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
-        return sqlSession.insert(name, paramNameAndObjMap);
+    private Object doInsert(SqlSession sqlSession, String name,IRealParam paramObj) {
+        return sqlSession.insert(name, paramObj);
     }
 
-    private Object doUpdate(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
-        return sqlSession.update(name, paramNameAndObjMap);
+    private Object doUpdate(SqlSession sqlSession, String name,IRealParam paramObj) {
+        return sqlSession.update(name, paramObj);
     }
 
-    private Object doDelete(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
-        return sqlSession.delete(name, paramNameAndObjMap);
+    private Object doDelete(SqlSession sqlSession, String name, IRealParam paramObj) {
+        return sqlSession.delete(name, paramObj);
     }
 
-    private Object doSelect(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
+    private Object doSelect(SqlSession sqlSession, String name,IRealParam paramObj) {
         if (method.isReturnList()) {
-            return sqlSession.selectList(name, paramNameAndObjMap);
+            return sqlSession.selectList(name, paramObj);
         }
-        return sqlSession.selectOne(name, paramNameAndObjMap);
+        return sqlSession.selectOne(name, paramObj);
     }
 
     @Data
@@ -87,7 +87,7 @@ public class MapperMethod {
             this.returnList = List.class.isAssignableFrom(method.getReturnType());
         }
 
-        public Map<String, Object> convertArgsToSqlCommandParam(Object[] args) {
+        public IRealParam convertArgsToSqlCommandParam(Object[] args) {
             return paramNameResolver.resolveNamedParams(args);
         }
     }

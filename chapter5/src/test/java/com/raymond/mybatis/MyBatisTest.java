@@ -3,15 +3,15 @@ package com.raymond.mybatis;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.parsing.XPathParser;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.raymond.mybatis.builder.XMLConfigBuilder;
-import com.raymond.mybatis.session.Configuration;
-import com.raymond.mybatis.session.DefaultSqlSessionFactory;
 import com.raymond.mybatis.testdata.CountryMapper;
 import com.raymond.mybatis.testdata.dao.Country;
 
@@ -21,14 +21,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @Slf4j
-public class MainTest {
+public class MyBatisTest {
     Configuration configuration;
     CountryMapper mapper;
 
     @Before
     public void before() throws Exception {
         configuration =
-                new XMLConfigBuilder(new XPathParser(Resources.getResourceAsReader("batis-config-test.xml"))).parse();
+                new XMLConfigBuilder(Resources.getResourceAsReader("batis-config.xml")).parse();
         mapper = new DefaultSqlSessionFactory(configuration).openSession().getMapper(CountryMapper.class);
     }
 
@@ -64,17 +64,6 @@ public class MainTest {
         countries.forEach(System.out::println);
     }
 
-
-    @Test
-    public void test_select_by_example() throws Exception {
-        Country example = new Country();
-        example.setCountryName("Germany");
-        example.setCountryCode("DE");
-        List<Country> countries = mapper.selectByExample(example);
-        Assert.assertTrue(CollectionUtils.isNotEmpty(countries));
-        System.out.println(countries);
-    }
-
     @Test
     public void test_delete_id() throws Exception {
         int cnt  = mapper.deleteById(1L);
@@ -103,5 +92,6 @@ public class MainTest {
 
         Assert.assertTrue(1 == cnt);
         Assert.assertNotNull(country.getId());
+        System.out.println(country);
     }
 }

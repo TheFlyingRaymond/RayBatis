@@ -1,9 +1,11 @@
 package com.raymond.mybatis.Executor;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -61,13 +63,32 @@ public class SimpleExecutor implements Executor {
     public int update(MappedStatement mappedStatement, IRealParam parameter) {
         try {
             SimpleSqlSource sqlSource = mappedStatement.getSqlSource();
-            PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(sqlSource.getSql());
+            PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(sqlSource.getSql(), Statement.RETURN_GENERATED_KEYS);
             Configuration configuration = mappedStatement.getConfiguration();
             parameterise(parameter, sqlSource, configuration, preparedStatement);
-            return preparedStatement.executeUpdate();
+            int cnt = preparedStatement.executeUpdate();
+
+            writeBackPK(preparedStatement, parameter);
+
+            return cnt;
         } catch (Exception e) {
             log.error("execute error", e);
         }
         return 0;
+    }
+
+    private void writeBackPK(PreparedStatement statement, IRealParam parameter) {
+        try {
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                Object id = generatedKeys.getObject(1);
+                if (id instanceof BigInteger) {
+                    parameter.setParam("id", ((BigInteger) id).longValue());
+                }
+            }
+        } catch (Exception e) {
+            log.error("handleKey error", e);
+            throw new RuntimeException(e);
+        }
     }
 }

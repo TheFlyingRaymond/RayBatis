@@ -7,14 +7,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TypeRealParam implements IRealParam {
     private Object obj;
+    private Class<?> objClass;
 
-    public TypeRealParam(Object type) {
-        this.obj = type;
+    public TypeRealParam(Object obj) {
+        this.obj = obj;
+        this.objClass = obj.getClass();
     }
 
     @Override
     public Object getParam(String name) {
         return getFieldValueByReflect(obj, name);
+    }
+
+    @Override
+    public void setParam(String name, Object value) {
+        try {
+            Field field = objClass.getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(obj, value);
+        } catch (Exception e) {
+            log.error("TypeRealParam setParam error, name:{}, value:{}", name, value, e);
+            throw new RuntimeException(e);
+        }
     }
 
     private Object getFieldValueByReflect(Object obj, String name) {

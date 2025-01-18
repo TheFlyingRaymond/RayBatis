@@ -13,4 +13,9 @@ public class MapRealParam implements IRealParam {
     public Object getParam(String name) {
         return paramMap.get(name);
     }
+
+    @Override
+    public void setParam(String name, Object value) {
+        // nothing
+    }
 }

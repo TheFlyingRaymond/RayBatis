@@ -103,5 +103,6 @@ public class MainTest {
 
         Assert.assertTrue(1 == cnt);
         Assert.assertNotNull(country.getId());
+        System.out.println(country);
     }
 }

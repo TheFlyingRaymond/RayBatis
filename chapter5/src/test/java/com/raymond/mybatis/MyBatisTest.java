@@ -47,11 +47,11 @@ public class MyBatisTest {
 
     @Test
     public void test_select_id_name() throws Exception {
-        Country country = mapper.selectByIdAndName(1L,"Canada");
+        Country country = mapper.selectByIdAndName(1L, "Canada");
         System.out.println(country);
         assertNull(country);
 
-        Country country2 = mapper.selectByIdAndName(2L,"Canada");
+        Country country2 = mapper.selectByIdAndName(2L, "Canada");
         System.out.println(country2);
         assertNotNull(country2);
         Assert.assertTrue(2L == country2.getId());
@@ -66,17 +66,17 @@ public class MyBatisTest {
 
     @Test
     public void test_delete_id() throws Exception {
-        int cnt  = mapper.deleteById(1L);
+        int cnt = mapper.deleteById(1L);
         Assert.assertTrue(1 == cnt);
     }
 
 
     @Test
     public void test_update() throws Exception {
-        int cnt  = mapper.updateNameById(1L,"nothing");
+        int cnt = mapper.updateNameById(1L, "nothing");
         Assert.assertTrue(0 == cnt);
 
-        int cnt2  = mapper.updateNameById(2L,"changeName2");
+        int cnt2 = mapper.updateNameById(2L, "changeName2");
         Assert.assertTrue(1 == cnt2);
 
         Country country = mapper.selectById(2L);

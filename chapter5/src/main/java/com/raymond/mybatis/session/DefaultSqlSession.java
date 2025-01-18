@@ -46,6 +46,22 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
+    public int delete(String statement, Map<String, Object> parameter) {
+        return update(statement, parameter);
+    }
+
+    @Override
+    public int insert(String statement, Map<String, Object> parameter) {
+        return update(statement, parameter);
+    }
+
+    @Override
+    public int update(String statement, Map<String, Object> parameter) {
+        MappedStatement mappedStatement = configuration.getMappedStatement(statement);
+        return executor.update(mappedStatement, parameter);
+    }
+
+    @Override
     public Configuration getConfiguration() {
         return configuration;
     }

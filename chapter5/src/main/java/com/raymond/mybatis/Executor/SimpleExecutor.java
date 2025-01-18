@@ -61,7 +61,16 @@ public class SimpleExecutor implements Executor {
     }
 
     @Override
-    public int update(org.apache.ibatis.mapping.MappedStatement ms, Map<String, Object> parameter) throws SQLException {
+    public int update(MappedStatement mappedStatement, Map<String, Object> parameter) {
+        try {
+            SimpleSqlSource sqlSource = mappedStatement.getSqlSource();
+            PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(sqlSource.getSql());
+            Configuration configuration = mappedStatement.getConfiguration();
+            parameterise(parameter, sqlSource, configuration, preparedStatement);
+            return preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            log.error("execute error", e);
+        }
         return 0;
     }
 }

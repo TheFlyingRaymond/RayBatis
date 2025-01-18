@@ -12,9 +12,21 @@
         select * from country where id = #{id}
     </select>
 
+    <delete id="deleteById">
+        delete  from country where id = #{id}
+    </delete>
+
     <select id="selectByName" resultMap="resultMap">
         select * from country where country_name = #{name}
     </select>
+
+    <update id="updateNameById" >
+        update country set country_name = #{name} where id = #{id}
+    </update>
+
+    <insert id="insertCountry">
+        insert into country (country_name, country_code) values (#{countryName}, #{countryCode})
+    </insert>
 
     <select id="selectByIdAndName" resultMap="resultMap">
         select * from country where id = #{id} and country_name = #{name}

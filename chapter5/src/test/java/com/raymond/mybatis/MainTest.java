@@ -63,4 +63,29 @@ public class MainTest {
         Assert.assertTrue(CollectionUtils.isNotEmpty(countries));
         countries.forEach(System.out::println);
     }
+
+    @Test
+    public void test_delete_id() throws Exception {
+        int cnt  = mapper.deleteById(1L);
+        Assert.assertTrue(1 == cnt);
+    }
+
+
+    @Test
+    public void test_update() throws Exception {
+        int cnt  = mapper.updateNameById(1L,"nothing");
+        Assert.assertTrue(0 == cnt);
+
+        int cnt2  = mapper.updateNameById(2L,"changeName2");
+        Assert.assertTrue(1 == cnt2);
+
+        Country country = mapper.selectById(2L);
+        Assert.assertTrue("changeName2".equals(country.getCountryName()));
+    }
+
+    @Test
+    public void test_insert() throws Exception {
+        int cnt = mapper.insertCountry("test_insert_name", "test_insert_code");
+        Assert.assertTrue(1 == cnt);
+    }
 }

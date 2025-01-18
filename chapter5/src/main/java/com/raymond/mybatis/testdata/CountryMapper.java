@@ -9,7 +9,13 @@ import com.raymond.mybatis.testdata.dao.Country;
 public interface CountryMapper {
     Country selectById(@Param("id") Long id);
 
+    int deleteById(@Param("id") Long id);
+
     List<Country> selectByName(@Param("name") String name);
+
+    int updateNameById(@Param("id") Long id, @Param("name") String name);
+
+    int insertCountry(@Param("countryName") String name, @Param("code") String countryCode);
 
     Country selectByIdAndName(@Param("id") Long id, @Param("name") String name);
 }

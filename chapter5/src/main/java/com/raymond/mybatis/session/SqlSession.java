@@ -10,5 +10,11 @@ public interface SqlSession {
 
     <T> List<T> selectList(String statement, Map<String,Object> parameter);
 
+    int delete(String statement, Map<String,Object> parameter);
+
+    int update(String statement, Map<String,Object> parameter);
+
     Configuration getConfiguration();
+
+    int insert(String name, Map<String, Object> paramNameAndObjMap);
 }

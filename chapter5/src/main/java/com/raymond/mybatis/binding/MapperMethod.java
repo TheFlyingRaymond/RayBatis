@@ -28,9 +28,27 @@ public class MapperMethod {
         switch (command.getType()) {
             case SELECT:
                 return doSelect(sqlSession, command.getName(), paramNameAndObjMap);
+            case DELETE:
+                return doDelete(sqlSession, command.getName(), paramNameAndObjMap);
+            case UPDATE:
+                return doUpdate(sqlSession, command.getName(), paramNameAndObjMap);
+            case INSERT:
+                return doInsert(sqlSession, command.getName(), paramNameAndObjMap);
             default:
                 throw new RuntimeException("Unsupported SQL command type: " + command.getType());
         }
+    }
+
+    private Object doInsert(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
+        return sqlSession.insert(name, paramNameAndObjMap);
+    }
+
+    private Object doUpdate(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
+        return sqlSession.update(name, paramNameAndObjMap);
+    }
+
+    private Object doDelete(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
+        return sqlSession.delete(name, paramNameAndObjMap);
     }
 
     private Object doSelect(SqlSession sqlSession, String name, Map<String, Object> paramNameAndObjMap) {
